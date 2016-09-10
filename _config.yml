@@ -1,11 +1,11 @@
 ######################站点全局信息，需要部分修改#########################
 # Site settings
-title: 小胖轩 
+title: InCredibleJay 
 header-img: img/home-bg.jpg
-email: app@codeboy.me
+email: ijaysdev@gmail.com
 url: "http://127.0.0.1"
-description: "编码生涯的点点滴滴"
-github_username:  androiddevelop
+description: "Do have faith in what you love"
+github_username:  jaysdev
 zhihu_username: codeboy
 duoshuo_id: androiddevelop
 
