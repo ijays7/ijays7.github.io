@@ -13,7 +13,7 @@ catalog: true
 
 1.  选择最近复制粘贴：(cmd + shift + v),默认展示最近5个复制粘贴选项。
 
-    ![201701024943911B093F3-72AD-4C75-A79D-98E90DE40FF2.png](http://7xqmjb.com1.z0.glb.clouddn.com/201701024943911B093F3-72AD-4C75-A79D-98E90DE40FF2.png)
+    ![201701038350264EC53A9-13ED-4B25-BAA3-45BE0D51A8E4.png](http://7xqmjb.com1.z0.glb.clouddn.com/201701038350264EC53A9-13ED-4B25-BAA3-45BE0D51A8E4.png)
 
     ​
 
@@ -38,14 +38,14 @@ catalog: true
 
 8.  全局查找：(mac cmd+shift+f ,win ctrl + shif t+ f)，是上一个命令的增强版，对某个字符串进行全局地搜索。
 
-    ![201701026323356E79CAA-C275-4375-B69D-200F75B96FFD.png](http://7xqmjb.com1.z0.glb.clouddn.com/201701026323356E79CAA-C275-4375-B69D-200F75B96FFD.png)
+    ![20170103840049F2C21A5-8301-48A8-BFA4-677F77669EF4.png](http://7xqmjb.com1.z0.glb.clouddn.com/20170103840049F2C21A5-8301-48A8-BFA4-677F77669EF4.png)
 
 
 9.  查找并替换：(mac cmd + r , win ctrl + r)。
 
 10.  查看最近修改的文件：(mac cmd + e，win ctrl + e)
 
-    ![20170102401706E485367-00D0-4E1E-934A-E174E246A405.png](http://7xqmjb.com1.z0.glb.clouddn.com/20170102401706E485367-00D0-4E1E-934A-E174E246A405.png)
+    ![20170103941240E6CBF51-0893-43A7-85D3-34CBD769A946.png](http://7xqmjb.com1.z0.glb.clouddn.com/20170103941240E6CBF51-0893-43A7-85D3-34CBD769A946.png)
 
     ​
 
