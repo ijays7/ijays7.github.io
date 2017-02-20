@@ -49,9 +49,7 @@ catalog: true
 
     ​
 
-11.  把一个硬编码的字符串放到资源文件中:(mac option + return, win alt + return)，使用时需先选中具体的字符串再按下快捷键。 
-
-    ​
+11.  把一个硬编码的字符串放到资源文件中:(mac option + return, win alt + return)，使用时需先选中具体的字符串再按下快捷键。 ​
 
 12.  打开快速重构面板：(mac control + t, win ctrl + alt + shift + t)。
 

@@ -1,15 +1,14 @@
 ---
-​---
 layout:     post
-title:      "Java 基础之Callable"
-date:       "2018-02-10 20:59:00"
+title:      "Java基础之Callable"
+date:       "2017-02-10 20:59:00"
 author:     "ijays"
+linear-gradient:    "linear-gradient(120deg,#2b488a,#ca3749)"
 catalog: true
 tags: [Java基础,线程]
-​---
 ---
 
-
+# Java 基础之Callable
 
 在开发中，我们总是要和线程打交道，而在Java中，创建线程的方法有三种，分别是继承Thread 类实现run() 方法、实现Runnable 接口重写run() 方法以及本文所记录Callable 和Future 创建线程。
 
