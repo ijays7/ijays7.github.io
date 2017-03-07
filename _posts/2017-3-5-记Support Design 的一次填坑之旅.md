@@ -3,12 +3,9 @@ layout:     post
 title:      "记Support Design 的一次填坑之旅"
 date:       "2017-03-5 23:48:00"
 author:     "ijays"
-linear-gradient:    "linear-gradient(120deg,#2b488a,#ca3749)"
 catalog: true
-tags: [Java基础,线程]
+tags: [Support Design, 填坑之旅]
 ---
-
-# 记Support Design 的一次填坑之旅
 
 最近因为Android Studio 升级到2.3正式版，将之前的老项目也进行了依赖更新，在这个过程中，发现了一些问题，将其记录如下。
 
@@ -84,7 +81,7 @@ mBottomSheetBehavior.setState(isShow ? BottomSheetBehavior.STATE_EXPANDED : Bott
 
 检查代码并没有发现什么问题，只好从BottomSheetBehavior 的源码中寻找答案。
 
-```Java
+```java
 public final void setState(final @State int state) {
     //篇幅所限，省略参数检查部分代码
     // Start the animation; wait until a pending layout if there is one.
@@ -102,9 +99,11 @@ public final void setState(final @State int state) {
 }
 ```
 
+
+
 setState() 方法中判断了parentView 即CoordinatorLayout是否添加到了窗口中，最终都会执行到startSettlingAnimation 方法中。
 
-```Java
+```java
 void startSettlingAnimation(View child, int state) {
     int top;
     if (state == STATE_COLLAPSED) {
@@ -123,9 +122,11 @@ void startSettlingAnimation(View child, int state) {
 }
 ```
 
+
+
 这里根据设置的不同状态对top（即偏移量）进行了赋值，接着设置内部状态为STATE_SETTLING，同时设置了onStateChanged 的回调。我们知道BottomSheetBehavior 的动画是利用了ViewDragHelper 来实现的，因此接下就调用了ViewDragHelper的smoothSlideViewTo 方法，它的返回值决定了是否能够执行状态改变的动画。
 
-```Java
+```java
 /**
  * Settle the captured view at the given (left, top) position.
  *
@@ -157,11 +158,11 @@ private boolean forceSettleCapturedViewAt(int finalLeft, int finalTop, int xvel,
 }
 ```
 
-从smoothSlideViewTo 方法中最终会走到forceSettleCapturedViewAt 方法，根据传入的x 轴，y 轴起始位置计算出真正的偏移量，当x轴，y轴的偏移量均为0时则表示不移动，那么返回回去使得动画无法执行。这样看来问题就缩小到了穿入的距离参数上面。
+从smoothSlideViewTo 方法中最终会走到forceSettleCapturedViewAt 方法，根据传入的x 轴，y 轴起始位置计算出真正的偏移量，当x轴，y轴的偏移量均为0时则表示不移动，那么返回回去使得动画无法执行。这样看来问题就缩小到了传入的距离参数上面。
 
-从上面代码得知，上面的finalTop 即之前根据状态设置的top，其源头为mMaxOffset以及mMaxOffset。
+从上面代码得知，上面的finalTop 即之前根据状态设置的top，也就是mMaxOffset 以及mMinOffset，其中peekHeight 这个参数对mMaxOffset 的值起到了决定性的作用。
 
-```Java
+```java
 // Offset the bottom sheet
 mParentHeight = parent.getHeight();
 int peekHeight;
@@ -176,4 +177,39 @@ if (mPeekHeightAuto) {
 }
 mMinOffset = Math.max(0, mParentHeight - child.getHeight());
 mMaxOffset = Math.max(mParentHeight - peekHeight, mMinOffset);
+
 ```
+
+```java
+//...构造函数中初始化
+ if (value != null && value.data == PEEK_HEIGHT_AUTO) {
+            setPeekHeight(value.data);
+        } else {
+            setPeekHeight(a.getDimensionPixelSize(
+                    R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight, PEEK_HEIGHT_AUTO));
+        }
+
+   /**
+     * Sets the height of the bottom sheet when it is collapsed.
+     *
+     * @param peekHeight The height of the collapsed bottom sheet in pixels, or
+     *                   {@link #PEEK_HEIGHT_AUTO} to configure the sheet to peek automatically
+     *                   at 16:9 ratio keyline.
+     */
+    public final void setPeekHeight(int peekHeight) {
+        boolean layout = false;
+        if (peekHeight == PEEK_HEIGHT_AUTO) {
+            if (!mPeekHeightAuto) {
+                mPeekHeightAuto = true;
+                layout = true;
+            }
+        } else if (mPeekHeightAuto || mPeekHeight != peekHeight) {
+            mPeekHeightAuto = false;
+            mPeekHeight = Math.max(0, peekHeight);
+            mMaxOffset = mParentHeight - peekHeight;
+            layout = true;
+        }
+     }
+```
+
+看到上面的代码，一切都明白了。Behavior 初始化的时候会去设置peekHeight，即collapse（收起）时的高度，默认值为-1，
