@@ -4,7 +4,7 @@ title:      "发布lib到jCenter&MavenCentral"
 date:       "2017-04-18 20:59:00"
 author:     "ijays"
 catalog: true
-tags: [Android自定义]
+tags: [jCenter]
 ---
 
 
