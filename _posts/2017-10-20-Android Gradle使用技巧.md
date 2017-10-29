@@ -1,11 +1,11 @@
+---
 layout:     post
 title:      "Android Gradle 小技巧"
 date:       "2017-10-20 20:00:00"
 author:     "ijays"
 catalog: true
 tags: [Gradle]
-
-
+---
 
 记录一些在Android 开发中使用到的Gradle 小技巧
 
