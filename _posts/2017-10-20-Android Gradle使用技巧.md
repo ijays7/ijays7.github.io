@@ -63,5 +63,50 @@ appKey = XXX  //注意没有加双引号会被当被做int 解析
 
 
 
+### 第三方Key管理
+
+在Android 开发中，时常会用到一些第三方SDK，例如消息推送、支付等。这些KEY 都是保存在AndroidManifest 文件中，比如：
+
+```xml
+    <meta-data
+            android:name="com.alibaba.app.appkey"
+            android:value="XXX" /> <!-- 请填写你自己的- appKey -->
+```
+
+为了方便统一管理，我们可以用一个变量代替，在build.gradle 中动态的替换。
+
+在Manifest 文件中：
+
+```xml
+    <meta-data
+            android:name="com.alibaba.app.appkey"
+            android:value="${ali_push_key}" /> <!-- 请填写你自己的- appKey -->
+```
+
+在build.gradle 文件中：
+
+```
+debug{
+   manifestPlaceholders = [ali_push_key:XXX]
+}
+release{
+   manifestPlaceholders = [ali_push_key:XXX]
+}
+```
+
+
+
+### 查看gradle task执行时间
+
+查看各个task 的执行时间。
+
+Gradle 命令中自带了查看task 执行时间的命令。eg
+
+```shell
+./gradlew assembleDebug --profile
+```
+
+执行成功后会在项目的build 目录中生成reports 目录，所有的task 执行时间都保存在其中的一个html 文件中。​
+
 
 
