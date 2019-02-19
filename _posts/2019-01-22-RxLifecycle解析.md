@@ -273,6 +273,10 @@ public static <T, R> LifecycleTransformer<T> bind(@Nonnull Observable<R> lifecyc
 
 至此，RxLifecycle 的基本原理已经被我们摸清了，其实原理并不复杂，核心是将上游的 Observable 通过compose 操作进行转换，在特定的时候进行 unsubscribe 操作（基于 takeUntil ）。而我们继承 RxActivity/RxFragment 的目的就是为了进行生命周期的判断，内部存储一个 BehaviorSubject，在 Activity 的每个生命周期发射事件，经过一系列巧妙的操作符操作最终转化为布尔类型的状态事件，虽然会带来一定程度上代码侵入性，但内部的设计思想仍然也许多值得我们学习借鉴的地方。
 
+## 感谢
+
+本文参考和借鉴了[这篇文章](https://www.jianshu.com/p/8311410de676)，感谢大佬的分享。
+
 
 
 
