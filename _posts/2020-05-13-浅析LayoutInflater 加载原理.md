@@ -2,7 +2,7 @@
 
 ## 加载布局文件
 
-我们以  ==setContentView== 作为切入点查看，
+我们以  `setContentView` 作为切入点查看，
 
 ```java
   @Override
