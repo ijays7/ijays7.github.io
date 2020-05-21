@@ -11,7 +11,7 @@
   }
 ```
 
-发现Activity 将填充布局工作委托给了==AppCompatDelegate==，
+发现Activity 将填充布局工作委托给了`AppCompatDelegate`，
 
 ```java
  @Override
@@ -27,7 +27,7 @@
   }
 ```
 
-跟我们平时动态添加布局一样，这里 ==AppCompatDelegate== 主要做了3 件事情：找到容器，移除内部已有的View，再往里添加View，最核心的当然是第三步，继续往下走。
+跟我们平时动态添加布局一样，这里 `AppCompatDelegate` 主要做了3 件事情：找到容器，移除内部已有的View，再往里添加View，最核心的当然是第三步，继续往下走。
 
 ```java
     public View inflate(@LayoutRes int resource, @Nullable ViewGroup root, boolean attachToRoot) {
@@ -42,7 +42,7 @@
     }
 ```
 
-这里通过 ==getLayout( )== 方法将传入的布局文件id 转换成了Java 对象，这里面是如何实现的呢？继续往下走。
+这里通过 `getLayout()` 方法将传入的布局文件id 转换成了Java 对象，这里面是如何实现的呢？继续往下走。
 
 ```java
 public class ResourcesImpl {   
@@ -77,11 +77,11 @@ public class ResourcesImpl {
 }
 ```
 
-代码跟到这里，终于知道了布局文件是如何被加载的了：在 ==ResourcesImpl== 中通过 ==AssetManager== 调用一个native 方法将布局文件加载到内存，转换成 ==XmlBlock== 对象。
+代码跟到这里，终于知道了布局文件是如何被加载的了：在 `ResourcesImpl` 中通过`AssetManager`调用一个native 方法将布局文件加载到内存，转换成 `XmlBlock`对象。
 
 ## 解析布局文件
 
-经过上面的分析终于知道布局文件是如何被加载进内存的了，So far so good。继续回到上面的 ==inflate( )==。
+经过上面的分析终于知道布局文件是如何被加载进内存的了，So far so good。继续回到上面的 `inflate( )`。
 
 ```java
  public View inflate(XmlPullParser parser, @Nullable ViewGroup root, boolean attachToRoot) {
@@ -118,7 +118,7 @@ public class ResourcesImpl {
     }
 ```
 
-我们可以看到， ==createViewFromTag( )== 返回了Xml 文件中的View，并且根据传入两个参数 ==root== 和 ==attachToRoot== 来判断是否需要加入容器中，接续看 ==createViewFromTag( )==
+我们可以看到， `createViewFromTag( )` 返回了Xml 文件中的View，并且根据传入两个参数 `root` 和 `attachToRoot` 来判断是否需要加入容器中，接续看 `createViewFromTag( )`
 
 ```java
     View createViewFromTag(View parent, String name, Context context, AttributeSet attrs,
@@ -160,7 +160,7 @@ public class ResourcesImpl {
     }
 ```
 
-上面实际上是调用了 ==tryCreateView( )== ，而这里又会根据 Factory(Factory2) 接口来创建View。查看继承关系发现，最开始接受 ==Activity== 委托的 ==AppCompatDelegateImpl== 实现了 ==LayoutInflater.Factory2== 接口，兜兜转转，又回到了最开始的地方。
+上面实际上是调用了`tryCreateView( )` ，而这里又会根据 Factory(Factory2) 接口来创建View。查看继承关系发现，最开始接受 `Activity` 委托的 `AppCompatDelegateImpl` 实现 `LayoutInflater.Factory2` 接口，兜兜转转，又回到了最开始的地方。
 
 ```java
     @Override
@@ -194,7 +194,7 @@ public class ResourcesImpl {
     }
 ```
 
-在 ==AppCompatDelegateImpl== 的 ==createView( )== 中，通过反射创建了 ==AppCompatViewInflater== 对象，并且将创建View 的工作又委托给了 ==AppCompatViewInflater.createView( )==。真是麻烦啊，不过很快就能看见曙光了。
+在 `AppCompatDelegateImpl` 的 `createView( )` 中，通过反射创建了 AppCompatViewInflater` 对象，并且将创建View 的工作又委托给了 `AppCompatViewInflater.createView( )`。真是麻烦啊，不过很快就能看见曙光了。
 
 ```java
   final View createView(View parent, final String name, @NonNull Context context,
@@ -225,7 +225,7 @@ public class ResourcesImpl {
   }
 ```
 
-Finally！！！在 ==AppCompatViewInflater.createView( )== 中我们真正的看到了Xml 中的View 是如何被new 出来的了。根据Xml 中的标签来返回相应的对象，如 TextView ，ImageView 这种系统提供的View 会通过直接new 对象的方式返回；而像我们平时自定义的View 则会通过反射的方式调用构造方法来创建。
+Finally！！！在 `AppCompatViewInflater.createView( )` 中我们真正的看到了Xml 中的View 是如何被new 出来的了。根据Xml 中的标签来返回相应的对象，如 TextView ，ImageView 这种系统提供的View 会通过直接new 对象的方式返回；而像我们平时自定义的View 则会通过反射的方式调用构造方法来创建。
 
 ## 总结
 
